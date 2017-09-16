@@ -1,13 +1,13 @@
 # STAT545-hw01-Griffith-Cody
 Hey Vincenzo! 
 
-##I'm editing this within the browser.
+## I'm editing this within the browser.
 
 Hello! My name is Cody Griffith and I'm studing for my Master's in Mathematics at UBC! I love to snowboard and recently learned how to surf. I try to spend most of my time at the beach because until Vancouver, I'd never really seen a beach before. I'm new to using git and github but I am not new to programming and pick up skills like this rather quickly. Very excited to standardize my workflow a bit in preparation for working in larger teams!
 
-##Everything here on is done locally!
+## Everything here on is done locally!
 
-###Here is some latex code
+### Here is some latex code
 
 $$\int_0^\infty e^{-x}\,dx=1$$
 
