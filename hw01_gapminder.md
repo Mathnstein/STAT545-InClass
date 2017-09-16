@@ -45,4 +45,4 @@ plot(lifeExp~gdpPercap,gapminder)
 
 We see here that this behavior is logistic and very roughly speaking, the higher the GDP per capita the longer the life expectancy.
 
-Now
+This is enough of a quick analysis of Gapminder.
