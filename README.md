@@ -11,12 +11,7 @@ $$\int_0^\infty e^{-x}\,dx=1$$
 
 I didn't know that RStudio can display latex within the notebook. That is pretty cool.
 
-Now here is some R code.
-
-x<-rnorm(1000)
-y<-rnorm(1000)
-example<-plot(x,y)
-dev.print(pdf, "hw1_example.pdf")
+I realize that if I tried to input R code here, it would not be evaluated as this is just a markdown file. I would need to either run it in R then output that here or use a Rmd file to do exactly that in one go.
 
 [This goes to Stat 545 homepage](stat545.com)
 
