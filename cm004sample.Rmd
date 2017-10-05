@@ -1,0 +1,24 @@
+---
+title: "Cm004"
+output: pdf_document
+---
+
+# Level 1 header
+
+## This is a header
+
+This is a line of text.
+
+-bullet 1
+-bullet 2
+
+```{r this is the first chunk,echo=FALSE, fig.width=3}
+x <- rnorm(100)
+y <- rnorm(100)
+plot(x, y)
+```
+
+```{r}
+summary(x)
+```
+

@@ -1,0 +1,97 @@
+---
+title: "cm010"
+author: "Cody"
+date: "October 5, 2017"
+output: pdf_document
+---
+
+We need the tidyverse as well as the devtools packages
+```{r}
+library(tidyverse)
+library
+library(devtools)
+```
+Here we explore the different ways to bring two data frames together using the dplyr package.
+```{r}
+left_join()
+inner_join()
+full_join()
+anti_join()
+semi_join()
+```
+Here we also pull packages from Joey Bernhardt's github repo.
+```{r}
+library(singer)
+```
+Now we pull the data into the current environment
+```{r}
+data("locations")
+data("songs")
+```
+
+```{r}
+glimpse(songs)
+glimpse(locations)
+```
+
+```{r}
+View(songs)
+View(locations)
+```
+
+### Release and Year
+
+Produce a dataframe with all the albums ('release'), the artists ('artist_name') and the year ('year') in which album was published.
+
+```{r}
+combined <- inner_join(locations,songs, by = c("title","artist_name")) %>% 
+              select(release,artist_name,year)
+View(inner_join(locations,songs,by="title"))
+View(combined)
+```
+
+### Challenge 1
+
+Get the number of releases per year
+
+```{r}
+inner_join(songs,locations,by="title") %>% 
+  count(year)
+```
+
+## Reshaping
+
+```{r}
+data("singer_locations")
+glimpse(singer_locations)
+```
+
+```{r}
+hfd_y <- singer_locations %>% 
+  select(year,artist_hotttnesss,artist_familiarity,duration)
+
+hfd_y %>% 
+  filter(year>1900) %>% 
+  ggplot(aes(x=year,y=duration))+
+  geom_point(color="orange")
+hfd_y %>% 
+  filter(year>1900) %>% 
+  ggplot(aes(x=year,y=artist_hotttnesss))+
+  geom_point(color="orange")
+```
+
+We want package 'tidyr', function 'gather()', from wide to long
+
+```{r}
+hfd_y_long <- hfd_y %>% 
+                gather(key="Measure",value="Units",artist_hotttnesss:duration)
+View(hfd_y)
+View(hfd_y_long)
+hfd_y_long %>% 
+  filter(year>1900) %>% 
+  ggplot(aes(x=year,y=Units))+
+  geom_point()+
+  facet_wrap(~ Measure)
+  
+```
+
