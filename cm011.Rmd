@@ -1,0 +1,58 @@
+---
+title: "cm011"
+author: "Cody"
+date: "October 10, 2017"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(singer)
+data("singer_locations")
+View(singer_locations)
+```
+From last time we had,
+```{r}
+hfd_y <- singer_locations %>% 
+  select(song_id,year,duration:artist_familiarity) %>% 
+  gather(key="Measures",value="My_values",duration:artist_familiarity)
+
+plot <- hfd_y %>% 
+  filter(year>1950) %>% 
+  ggplot(aes(x=year,y=My_values))+
+  geom_point(alpha=.2,color="orange")+
+  facet_wrap(~Measures,scales="free_y")
+
+plot
+
+```
+We have plotted for each value, the duration, hottness and familiarity and had to fix the scales since the values were not on the same order.
+
+
+```{r}
+hfd_y %>% 
+  spread(Measures,My_values)
+```
+If we want to recover the original dataset (before we gathered it into longer columns), we need to have some form of a unique identifier. In this case, we use "Song_id" to do this unique identification. You can also select the artist name, title .and the release to get this uniqueness (multiple columns can be used together to get uniqueness)
+
+```{r}
+library(reshape2)
+hfd_y_mean <- hfd_y %>% 
+              dcast(year ~ Measures, value.var = "My_values",
+              fun.aggregate = mean, na.rm = TRUE)
+View(hfd_y_mean)
+```
+Now we have taken the average of each the variables of interest per year. We could change the aggregated function to variance or even specify a different variable of interest, maybe per artist.
+
+Similarly, we could use the group_by and summarize function to do something similar.
+
+```{r}
+typeof(plot)
+class(plot)
+typeof(`%>%`)
+class(`%>%`)
+```

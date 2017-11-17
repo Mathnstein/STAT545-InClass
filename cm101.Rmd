@@ -1,0 +1,149 @@
+---
+title: "cm101"
+author: "Cody"
+date: "October 24, 2017"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# R for strings
+
+```{r}
+my_string <- "That's cool"
+my_string
+my_string2 <- 'This is another string with "double quotes". That\'s cool'
+my_string2
+my_string3 <- "A slash \\ "
+my_string3
+```
+
+### Homework
+
+How do I "string" a single slash?
+```{r}
+my_string4 <- `my_string`
+my_string5 <- 'my_string'
+my_string4==my_string5
+my_string
+```
+Back quotes `` will allow for white space. This is useful for using datasets with strings.
+
+```{r}
+library(singer)
+places <- unique(singer_locations$city)
+
+str(places)
+nchar(c("City","double", "a very long string"))
+nchar(c("",NA," ","      ","\t","  "))
+```
+Note: Tab is represented by \t or just a tab, and they have different values under nchar. Quite strange.
+
+## The tools of the trade
+
+```{r}
+devtools::install_github("tidyverse/stringer")
+devtools::install_github("tidyverse/glue")
+library(tidyverse)
+library(stringer)
+library(glue)
+```
+
+glueing 'glue{}'
+
+```{r}
+my_name <- "Cody"
+my_age <- 013
+my_color <- "Orange"
+glue("My name is {my_name},", " My age yesterday was {my_age-1/365}")
+paste0("My name is ",my_name,", My age yesterday was ",my_age-1/365)
+```
+
+Indentation
+```{r}
+glue("
+My name is
+          {my_name}, 
+My age yesterday was 
+          {my_age-1/365}")
+```
+Phrase : Today is Wedneday, October 29, 1986 and the sun shrines
+Sys.date()
+glue them togther
+
+```{r}
+phrase <- "Today is {Today_date} and the sun shrines"
+glue(phrase,
+     Today_date=Sys.Date())
+glue(phrase,
+     Today_date=(format(Sys.Date(), "%A, %B %d, %Y")))
+```
+Glue data
+```{r}
+singer_locations %>% 
+  glue_data("{artist_name} is from {city}.") %>% 
+  head()
+```
+
+# Stringr
+
+Here are all the functions from this package
+```{r}
+library(stringr)
+install.packages("htmlwidgets")
+library(htmlwidgets)
+getNamespaceExports("stringr")
+```
+
+Now lets say we want only the functions that have str
+```{r}
+getNamespaceExports("stringr") %>%
+  str_view("str_")
+
+getNamespaceExports("stringr") %>% 
+  str_subset("str_")
+```
+
+Lets find all the places containing th estring "york"
+```{r}
+places <- unique(singer_locations$city)
+
+places %>% 
+  str_to_lower() %>% 
+  str_subset("york")
+```
+
+ # Regular Expressions
+ 
+ 
+```{r}
+places %>%
+str_subset("[Yy]ork")
+
+places %>% 
+  str_subset(coll("york",ignore_case=TRUE))
+
+places %>% 
+  str_subset("York$")
+
+places %>% 
+  str_subset("^York")
+```
+
+Find all places that contain a digit in their name
+
+```{r}
+places %>% 
+  str_subset("[:digit:]")
+```
+
+B.a means must begin with B and have one a after B.
+B.a? means either 0 or 1 a must happen after B.
+B.a+ means multiple a can come after B.
+```{r}
+places %>% 
+  str_subset("B.a+")
+```
+

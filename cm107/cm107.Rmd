@@ -1,0 +1,55 @@
+---
+title: "cm107"
+author: "Cody"
+date: "November 14, 2017"
+output: pdf_document
+---
+# 11/14
+
+Here is an example of using remake to do all the generation of plots and loading data. This requires the following files in the directory:
+
+* 00_download-data.R
+* 01_filter-reorder-plot.R
+* 02_aggregate-plot.R
+
+```{r}
+## one script to rule them all
+
+## clean out any previous work
+outputs <- c("lotr_raw.tsv",                     # 00_download-data.R
+	     "lotr_clean.tsv",                   # 01_filter-reorder-plot.R
+	     "total-words-by-film-race.tsv",     # 02_aggregate-plot.R
+             list.files(pattern = "*.png$"))
+file.remove(outputs)
+
+## run my scripts
+source("00_download-data.R")
+source("01_filter-reorder-plot.R")
+source("02_aggregate-plot.R")
+```
+
+# Here is material from today:
+
+This is cool! Here is some info on how to create shiny apps:
+* [Interactive tutorial](https://docs.google.com/presentation/d/1dXhqqsD7dPOOdcC5Y7RW--dEU7UfU52qlb0YD3kKeLw/edit#slide=id.gd53c66aaf_0_1)
+* [Example github repo](https://github.com/sdasadia/Global-Terrorism-Database)
+* [Example app](https://sarthakdasadia.shinyapps.io/GlobalTerrorism/)
+* [Class tutorial](http://stat545.com/shiny01_activity.html)
+
+To actually create these apps:
+```{r}
+install.packages("shiny")
+```
+
+This will start a server for an example, the url provided can actually be googled and seen by anyone.
+```{r}
+library(shiny)
+runExample("01_hello")
+```
+
+Here I create my own app! See folder: First_shiny
+
+**Note:** It is important that the shiny app is in a seperate location with only necessary files with it.
+
+
+

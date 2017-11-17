@@ -1,0 +1,11 @@
+---
+title: "cm105"
+author: "Cody"
+date: "November 9, 2017"
+output: pdf_document
+---
+
+Here we install remake to build an automated pipeline.
+```{r}
+devtools::install_github("richfitz/remake")
+```

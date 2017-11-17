@@ -1,0 +1,80 @@
+---
+title: "Untitled"
+author: "Cody"
+date: "November 2, 2017"
+output: pdf_document
+---
+
+## Picking up directly from cm103:
+
+```{r}
+library(tidyverse)
+library(purrr)
+library(repurrrsive)
+```
+The gh_repos data set is very nested and this makes it difficult to access the varying components.
+```{r}
+data("gh_repos") #Store the data but as a "promise", meaning R is aware of its presence but its too big
+
+gh_repos #Even writing this will now load the dataset and we see its very big.
+
+View(gh_users) #Need to update r studio, View isn't working
+
+library(listviewer)
+jsonedit(gh_repos) #Alternatively
+```
+Extracting information from lists: Pull from the first level the full names.
+```{r}
+gh_repos %>% 
+  map_chr(list(1,"full_name"))
+```
+
+```{r}
+gh_repos %>% 
+  map_int(list(4,"owner","id"))
+```
+Want to make a named data frame based on pulling entries out of another data frame?
+We will take the first repos owner id and create a names vector, put them together to be a two column dataframe
+```{r}
+library(tibble)
+u_id <- gh_repos %>% 
+  map_int(list(1,"owner","id"))
+
+gh_repos_named <- gh_repos %>% 
+  set_names(u_id)
+
+gh_repos_df <- gh_repos_named %>% 
+  enframe("user_id", "repository stuff")
+
+jsonedit(gh_repos_df)
+```
+Instead we will use logins instead of id
+```{r}
+u_login <- gh_repos %>% 
+  map_chr(list(1,"owner","login"))
+
+gh_repos_named <- gh_repos %>% 
+  set_names(u_login)
+
+gh_repos_df <- gh_repos_named %>% 
+  enframe("user_login", "other repository stuff")
+
+jsonedit(gh_repos_df)
+```
+```{r}
+gh_repos_df %>%
+  filter(user_login %in% c("masalmon", "leeper")) %>% 
+  mutate(number_of_repositories=map_int(`other repository stuff`,length)) %>% 
+  jsonedit()
+```
+Put together the aliases and the names of each character on GoT
+```{r}
+aliases_names <- set_names(map(got_chars,"aliases"),map(got_chars,"name"))
+map_int(aliases_names,length) #Lol Dany has 11 names
+
+collapse_by_comma <- function(vec_of_strings){
+  paste(vec_of_strings,collapse = ", ")
+}
+map(aliases_names,collapse_by_comma)
+```
+

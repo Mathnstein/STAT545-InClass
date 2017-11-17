@@ -1,0 +1,104 @@
+---
+title: "cm103"
+author: "Cody"
+date: "October 31, 2017"
+output: pdf_document
+---
+
+## Vectors
+```{r}
+v_log <- c(TRUE, FALSE, FALSE, TRUE)
+v_int <- 1:10
+v_double <- 1:4*2.1
+v_char <- letters[1:4]
+```
+You can pull with vectors and drop terms with negatives
+```{r}
+v_char[v_log]
+v_int[-5]
+```
+You will modify the entire vector's type if you modify a single entrie's type.
+```{r}
+v_double_copy <- v_double
+v_double_copy[2] <- "uh oh"
+str(v_double_copy)
+```
+## Lists
+
+```{r}
+x <- list(1:3,c("four","five"))
+y <- list(logical = TRUE, integer = 4L, double = 4*1.2, character = "char")
+z <- list(letters[26:22], transcendental = c(pi,exp(1)), f = function(x) x^2)
+
+y[c(2,3)]
+z[2]
+z$transcendental
+z['transcendental']
+```
+To extract, there are a few options, single brackets will retain the outer shell's structure, where double brackets will throw that away and keep the structure of only the inner
+```{r}
+y[2]
+y[[2]]
+```
+## For loops
+
+```{r}
+n <- 5
+res <- rep(NA_integer_,n)
+
+for(i in seq_len(n)){
+  res[i] <- i^2
+}
+
+res
+
+(1:n)^2
+```
+Issue with lists and vectorizing though
+```{r}
+exp(v_double)
+l_double <- as.list(v_double)
+exp(l_double)
+```
+# Purr
+
+```{r}
+library(purrr)
+
+map_dbl(l_double,exp)
+```
+
+```{r}
+library(stringr)
+
+# map_chr(fruit,str_split," ")
+
+fruit %>% 
+  map(str_split," ")
+
+fruit %>% 
+  map_chr(str_to_upper)
+```
+
+# Different section
+
+```{r}
+library(repurrrsive)
+library(listviewer)
+library(purrr)
+
+str(gh_users)
+
+jsonedit(gh_users)
+
+map(gh_users,"login")
+
+#It turns out the position for the login is 18
+gh_users %>% 
+  map(18)
+
+map(gh_users, `[`, c("login", "name", "id", "location"))
+
+map(gh_users, magrittr::extract, c("login","name"))
+```
+

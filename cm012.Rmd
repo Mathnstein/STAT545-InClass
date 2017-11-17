@@ -1,0 +1,96 @@
+---
+title: "cm012"
+author: "Cody"
+date: "October 12, 2017"
+output: pdf_document
+---
+
+```{r}
+typeof(5)
+class(5)
+
+typeof("hi")
+class("hi")
+
+a=c(1,2,3);
+typeof(a)
+class(a)
+
+A=matrix(1:10, nrow = 5, ncol = 2, byrow = T)
+typeof(A)
+class(A)
+
+library(tidyverse)
+library(singer)
+data("singer_locations")
+
+my_plot <- singer_locations %>% 
+            ggplot(aes(x = year, y = artist_hotttnesss))
+typeof(my_plot)
+class(my_plot)
+
+x <- list(number_of_cats = 1, cat_color = "red", plot = my_plot)
+typeof(x)
+class(x)
+```
+Try to change one entry of singer_locations from one type to another and see what happens.
+```{r}
+data("singer_locations")
+typeof(singer_locations$year)
+singer_locations$year[5]="hi"
+typeof(singer_locations$year)
+head(singer_locations)
+```
+# Learning how to read and write to file
+```{r}
+read_csv() #Better than read.csv, in the tidyverse.
+
+readxl::read_xlsx()
+write_csv()
+```
+# Factors
+```{r}
+library(forcats)
+library(singer)
+library(tidyverse)
+data("singer_locations")
+
+sl <- singer_locations %>% 
+  mutate(artist_name_factor = as_factor(artist_name))
+glimpse(sl)
+
+sl <- sl %>% 
+  mutate(artist_name_factor_base= factor(artist_name))
+glimpse(sl)
+
+x <- c("a", "c", "b")
+as_factor(x)
+factor(x) #base factor will move the factors around which can be risky
+
+sl %>% 
+  count(artist_name) %>% 
+  arrange(-n)
+
+sl %>% 
+  mutate(top_an = fct_lump(artist_name_factor, n = 7)) %>% 
+  count(top_an) %>% 
+  arrange(-n)
+
+#Homework
+summarize(mean_duration = mean(duration)) %>% 
+  ggplot(aes(x = artist_name,....)) #finish this
+
+sl <- sl %>% 
+  mutate(city_factor = ifelse(is.na(city),
+                              "missing information",
+                              city),
+         city_factor=as_factor(city_factor))
+glimpse(sl)
+
+sl %>% 
+  mutate(top_city=fct_lump(city_factor, n = 7)) %>% 
+  count(top_city) %>% 
+  arrange(-n)
+# Can use forcats to clean up.
+```
+
